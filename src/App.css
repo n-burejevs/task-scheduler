@@ -1,0 +1,301 @@
+.main-content{
+  background-color: black;
+  display: flex;
+  column-gap: 20px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.active-tasks, .completed-tasks{
+  margin-top: 90px;
+}
+
+.navbar{
+  position: fixed;
+  background-color: grey;
+  height: 30px;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-style: ridge;
+  color: white;
+  /*text-align: center;*/
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.show-hide-btn{
+  cursor: pointer;
+
+}
+
+.active-task-list, .completed-task-list{
+  background-color: white;
+  border-radius: 5px;
+  border-style: none;
+  margin-top: 15px;
+  min-height: 200px;
+  max-height: 600px;
+  /*min-width: 320px;*/
+  overflow-x: hidden;
+
+  /*gemini made me do this/*/
+  /*flex-basis: 50%;
+  flex-grow: 1;*/
+
+  /*display: flex;
+  flex-direction: column; */
+  
+}
+
+.active-tasks-row, .completed-tasks-row{
+  transition: 0.3s ease-out;
+  padding: 5px;
+}
+
+.active-tasks-row:hover, .completed-tasks-row:hover{
+  background-color: rgba(249, 142, 1, 0.559);
+  transform: scale(1.01);
+  box-shadow: 0 0 5px black;
+ 
+}
+
+.active-tasks-row, .completed-tasks-row, .top-section{
+  display: flex;
+  /*justify-content: space-evenly;*/
+  column-gap: 10px;
+  /*position: relative;*/
+  align-items: center;
+ 
+}
+.top-section{
+  border-bottom: 1px;
+  border-bottom-style: solid;
+}
+.container-for-container{
+  position: absolute;
+  left: 0;
+  padding-left: 0px;
+}
+.task-name{
+  padding-left: 10px;
+}
+
+.delete-button, .edit-button, .completed-btn{
+  cursor: pointer;
+
+}
+.delete-button:hover, .edit-button:hover, .completed-btn:hover, .save-edit-btn:hover{
+  scale: 1.4;
+}
+.edit-menu-container{
+  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  /*width: 100%;*/
+  padding-bottom: 15px;
+
+}
+.task-details{
+  padding-top: 15px;
+  padding-bottom: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-evenly;
+  column-gap: 15px;
+
+}
+.desc-field{
+  width: 90%;
+  height: 100px;
+  overflow-y: scroll;
+  border-radius: 10px;
+}
+
+.close-btn{
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  scale: 1.4;
+}
+.close-btn:hover{
+  scale: 1.8;
+  cursor: pointer;
+}
+.titles{
+  margin-left: 15px;
+}
+.task-name, .titles{
+ /*flex: 1;*/
+ margin-right: auto;
+  overflow: hidden;
+}
+.icons-block{
+  justify-content: center;
+  align-items: center;
+}
+.icons-block, .date-section{
+  display: grid;
+  grid-template-columns: auto 22px 22px 22px/* 22px*/;
+  column-gap: 5px;
+  margin-left: auto;
+
+}
+.date-section{
+  margin-right: 20px;
+}
+
+.add-task-button{
+  margin-top: 20px;
+}
+
+.todo-single-text:focus{
+  outline: transparent;
+}
+
+.new-task-form, .completed-task-form{
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.form-labels{
+  color:white;
+}
+.todo-single-text{
+  padding: 0;
+  margin: 0;
+  margin-left: 8px;
+}
+.save-edit-btn svg{
+  scale: 1.25;
+}
+.save-edit-btn{
+  width: 100%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.date-text{
+  font-size: small;
+  font-style: italic;
+  margin-right: 5px;
+}
+
+.completed-task-form button{
+  margin-top: 15px;
+}
+.search-field-container{
+  position: relative;
+  width: 100%;
+}
+
+.search-input{
+  width: 100%; /* This tells the input to fill the div */
+  box-sizing: border-box; /* Crucial: ensures padding doesn't break the width */
+  padding-right: 30px; /* Make room so text doesn't go under the 'X' button */
+
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out; /* Makes the color change smooth */
+  outline: none; /* Removes the default browser ring */
+}
+.search-input:focus {
+  border-color: orange; /* Matches your hover/tooltip color */
+  box-shadow: 0 0 8px rgba(249, 142, 1, 0.4); /* Adds a soft orange glow */
+}
+/* When the input inside this container is clicked... */
+.search-field-container:focus-within {
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.05); /* Slight highlight to the background */
+}
+
+/* You could even make the Clear button change color when typing */
+.search-field-container:focus-within .cancel-search-btn {
+  color: orange;
+}
+.cancel-search-btn
+{
+  position: absolute;
+ /* right: 0;
+  top: 2px;*/
+
+  right: 5px; /* Adjusted for better spacing */
+  top: 50%;
+  transform: translateY(-50%); /* Centers the icon vertically */
+  cursor: pointer;
+}
+
+.span-tooltip-container{
+  position: relative;
+}
+.span-tooltip-container label
+{
+  position: absolute;
+  top: -25px;
+  display: none;
+  right: 0;
+  font-size: small;
+  background-color: orange;
+  overflow: visible;
+  text-wrap: wrap;
+  text-align: center;
+  padding: 2px;
+  border-radius: 3px;
+  border: none;
+}
+.span-tooltip-container:hover label{
+  display: block;
+}
+
+#closeEdit-btn{
+  scale: 1.4;
+  cursor: pointer;
+  top: 20px;
+}
+
+#closeEdit-btn:active{
+  scale: 1.2;
+}
+
+
+
+@media (width >= 48em){
+  .main-content{
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .completed-tasks-row, .active-tasks-row{
+    padding-right: 10px;
+  }
+.todo-single-text{
+  width: 100%;
+}
+.active-tasks, .completed-tasks{
+  width: 47%;
+}
+
+}
+@media (width < 48em){
+  .main-content{
+    flex-direction: column;
+  }
+
+  .task-name{
+   max-width: 200px;
+    
+}
+.edit-input-container{
+  max-width: 120px;
+}
+.todo-single-text{
+  width: 100%;
+}
+.active-tasks, .completed-tasks{
+  width: 100%;
+}
+}

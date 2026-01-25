@@ -1,0 +1,33 @@
+/*#root, body
+{
+  margin: 0;
+  
+}
+
+body > #root > div {
+  height: 100vh;
+}*/
+
+html, body, #root {
+  /* Set height to 100% of the parent's height. 
+     html's parent is the viewport, body's parent is html, #root's parent is body. */
+  height: 100%; 
+  /* Prevent horizontal scrolling issues and potential small gaps */
+  width: 100%; 
+}
+
+
+body {
+  /* Remove browser's default margin, which often creates the unwanted gap */
+  margin: 0; 
+  /* Optional: Remove default padding if you're using a CSS reset */
+  padding: 0; 
+}
+
+.main-content {
+  /* This ensures the main container fills all available space within #root */
+  flex-grow: 1; 
+  min-height: 100%; /* Important for ensuring it's at least the height of the viewport */
+  /* If you want the background to cover everything, set it here. */
+  /*background-color: #f0f0f0;*/ /* Example color */
+}
