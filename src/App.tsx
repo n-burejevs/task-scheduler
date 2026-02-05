@@ -2,32 +2,27 @@
  * //somewhat inspired by: https://github.com/piyush-eon/react-typescript-taskify/blob/react-typescript-tutorial/src/components/SingleTodo.tsx
  * https://www.youtube.com/watch?v=FJDVKeh7RJI
  * Done:
- *   3* label, tooltip saying task is repeating when hover on toRepeat icon?
+ *  *10 check for editMode on date span element, if true -> render input field to edit the date?
  * 
  * 
- * 
+ * date overlaps with -> move all the ability to edit to editMenu component?
+ * datemenu wont showup on mobile,
+ * double click event does not open the task menu?
   1* when task is adder, start a timer, to track the time it took to complete a task
   2* new idea no need for timer -> Date.now - Date when it was added! -> mark red if deadline was missed?
   4* Clicking on task name, opens a menu with task description and a form to edit date, other fields too
   5* SingleTodo is not a reusable component, only used for pendingTasks state...
   can i pass icons for a different type of list?
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  6* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! after search-field-container was added, input field has wrong width...
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  7* sort the list once the task is markedCompled, when its a reacuring/its repeating once a month? 
-    (the date gets updated, but it stays in the same place). And what about ferbruary(28-29 days? and some months have 30 some 31 days...)
-    task in december? -> update the year too....
-    and we just cant ever send it to completed list???
-  8* what about weekly tasks???
+
   9* pressing icons (complete, delete, repeated, edit) on mobile should have a menu pop up and ask to confirm the action?
-  *10 check for editMode on date span element, if true -> render input field to edit the date?
+ 
   */
 
 import './App.css'
 import React from 'react';
 //import { MdDoneAll } from "react-icons/md";
 //import { MdDone } from "react-icons/md";
-import { MdDeleteForever } from "react-icons/md";
+
 import { MdClear } from "react-icons/md";
 
 //import { MdEdit } from "react-icons/md";
@@ -39,7 +34,9 @@ import SingleTodo from './components/SingleTodo';
 import type { Task } from './model';
 //import { mergeSort } from './mergeSort';
 //import {DragDropContext, } from 'react-beautiful-dnd'; 
-
+import SingleCompleted from './components/SingleCompleted';
+import { DragDropContext, Droppable } from '@hello-pangea/dnd';
+import type {DropResult} from '@hello-pangea/dnd';
 
 const App: React.FC = () => {
 
@@ -152,11 +149,7 @@ if(!d.valueOf()) {return ""}
     setPendingTasks(pendingTasks.filter(task => task.id !== id))
   }
 
-    function deleteTaskCompleted(id:number)
-  {
-     setCompletedTasks(completedTasks.filter(task => task.id !== id))
-     console.log(id);
-  }
+
 
   const [searchFor, setSearchFor] = React.useState<string>("")
   const [searchResult, setSearchResult] = React.useState<Task[]>([])
@@ -200,6 +193,34 @@ else searchInCompletedTasks();
 
   },[showActive, showCompleted])
 
+
+
+  const onDragEnd = (result: DropResult) => {
+  const { source, destination } = result;
+
+  // If dropped outside the list or in the same spot
+  if (!destination || destination.index === source.index) return;
+
+  const items = [...pendingTasks];
+  const [reorderedItem] = items.splice(source.index, 1);
+  items.splice(destination.index, 0, reorderedItem);
+
+  setPendingTasks(items);
+};
+
+const onDragEndTasksDone = (result: DropResult) => {
+  const { source, destination } = result;
+
+  // If dropped outside the list or in the same spot
+  if (!destination || destination.index === source.index) return;
+
+  const items = [...completedTasks];
+  const [reorderedItem] = items.splice(source.index, 1);
+  items.splice(destination.index, 0, reorderedItem);
+
+  setCompletedTasks(items);
+}
+
   return (
     <> 
   <div className='main-content'>
@@ -228,12 +249,35 @@ else searchInCompletedTasks();
 
      <div className='active-task-list'>
       <div className='top-section'><span className='titles'>Name</span><span className='date-section'>Date</span></div>
-      {pendingTasks.map((task) => (
+
+      {/*pendingTasks.map((task) => (
         <SingleTodo key={task.id} task={task} completedTasks={completedTasks} setCompletedTasks={setCompletedTasks} 
                     pendingTasks={pendingTasks} deleteTask={deleteTask} setPendingTasks={setPendingTasks}
                    
-                   /* taskType="pending"*//>
-       )) }
+                   />
+       )) */}
+
+<DragDropContext onDragEnd={onDragEnd}>
+    <Droppable droppableId="tasks-list">
+      {(provided) => (
+        <div {...provided.droppableProps} ref={provided.innerRef}>
+          
+          {pendingTasks.map((task, index) => (
+            <SingleTodo 
+              key={task.id}
+              index={index} // MUST pass index
+              task={task} completedTasks={completedTasks} setCompletedTasks={setCompletedTasks} 
+                    pendingTasks={pendingTasks} deleteTask={deleteTask} setPendingTasks={setPendingTasks}
+            />
+          ))}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>
+
+
+
      </div>
     </div> }
 
@@ -251,36 +295,29 @@ else searchInCompletedTasks();
         {/*<button>Search</button>*/}
       </form>
      
+    {/*<SingleCompleted searchResult={searchResult} setCompletedTasks={setCompletedTasks} completedTasks={completedTasks}/>*/}
 
-     <div className='completed-task-list'>
-       
-       { //print results, which are filtered from original list, or print the whole original list(completed tasks)
-       searchResult.length>0 ? 
-       
-        searchResult.map((task) => (
+  <DragDropContext onDragEnd={onDragEndTasksDone}>
+    <Droppable droppableId="tasks-list">
+      {(provided) => (
+        <div {...provided.droppableProps} ref={provided.innerRef}>
+         <div className='completed-task-list' >
+          { //print results, which are filtered from original list, or print the whole original list(completed tasks)
+           searchResult.length>0 ? 
+           
+            searchResult.map((task, index) => (<SingleCompleted task={task} key={task.id} index={index} 
+            setCompletedTasks={setCompletedTasks} completedTasks={completedTasks}/>))
+            :
+             completedTasks.map((task, index) => (<SingleCompleted task={task} key={task.id} index={index} 
+              setCompletedTasks={setCompletedTasks} completedTasks={completedTasks}/>))
+          }
+          {provided.placeholder}
+        </div>
+        </div>
 
-        <div key={task.id} className='completed-tasks-row'>
-          <span className='task-name'> {task.name}</span> 
-          <span className='date-text'> {task.dueDate} </span>
-           <span> <MdDeleteForever onClick={()=>deleteTaskCompleted(task.id)} className='delete-button'/> </span>
-          </div>
-
-           )
-        )
-        :
-         completedTasks.map((task) => (
-
-        <div key={task.id} className='completed-tasks-row'>
-          <span className='task-name'> {task.name}</span> 
-          <span className='date-text'> {task.dueDate} </span>
-           <span> <MdDeleteForever onClick={()=>deleteTaskCompleted(task.id)} className='delete-button'/> </span>
-          </div>
-
-           )
-        )
-      }
-     
-     </div> 
+      )}
+    </Droppable>
+  </DragDropContext>
 
       
     </div> }

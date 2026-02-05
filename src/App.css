@@ -71,6 +71,8 @@
 .top-section{
   border-bottom: 1px;
   border-bottom-style: solid;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 .container-for-container{
   position: absolute;
@@ -89,29 +91,33 @@
   scale: 1.4;
 }
 .edit-menu-container{
-  background-color: blue;
   display: flex;
   flex-direction: column;
   position: relative;
   align-items: center;
   /*width: 100%;*/
-  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-style: solid;
+  border: none;
+  border-bottom: 20px;
 
 }
 .task-details{
   padding-top: 15px;
   padding-bottom: 10px;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 125px;
   justify-content: space-evenly;
   column-gap: 15px;
-
+  row-gap: 15px;
 }
 .desc-field{
-  width: 90%;
+  width: 85%;
   height: 100px;
   overflow-y: scroll;
   border-radius: 10px;
+  
+  resize: none
 }
 
 .close-btn{
@@ -129,8 +135,10 @@
 }
 .task-name, .titles{
  /*flex: 1;*/
- margin-right: auto;
+  margin-right: auto;
   overflow: hidden;
+  text-wrap: stable;
+  text-align: left;
 }
 .icons-block{
   justify-content: center;
@@ -149,6 +157,7 @@
 
 .add-task-button{
   margin-top: 20px;
+  cursor: pointer;
 }
 
 .todo-single-text:focus{
@@ -224,7 +233,7 @@
  /* right: 0;
   top: 2px;*/
 
-  right: 5px; /* Adjusted for better spacing */
+  right: 10px; /* Adjusted for better spacing */
   top: 50%;
   transform: translateY(-50%); /* Centers the icon vertically */
   cursor: pointer;
@@ -262,6 +271,13 @@
   scale: 1.2;
 }
 
+#prevent-select
+{
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
 
 
 @media (width >= 48em){
@@ -277,6 +293,9 @@
 }
 .active-tasks, .completed-tasks{
   width: 47%;
+}
+.task-details{
+  width: 85%;
 }
 
 }
@@ -298,4 +317,28 @@
 .active-tasks, .completed-tasks{
   width: 100%;
 }
+
+.new-task-form, .completed-task-form{
+  justify-content: center;
+  align-items: center;
+  padding-left: 3px;
+  padding-right: 3px;
+
+}
+.active-task-list, .completed-task-list, .new-task-form, .completed-task-form{
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+
+.new-task-form input, .add-task-button{
+ width: 100%;
+}
+.task-details{
+  padding-top: 30px;
+}
+.completed-tasks{
+  margin-bottom: 20px;
+}
+
 }
