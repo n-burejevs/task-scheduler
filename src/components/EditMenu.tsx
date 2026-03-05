@@ -95,7 +95,7 @@ export default function EditMenu({/*id,*/ task, pendingTasks,  setPendingTasks, 
 
        <input type="text" value={name} onChange={(e)=>setName(e.target.value)}></input>
           <input type="date" value={date} onChange={(e)=>setDate(e.target.value)}></input>
-          <button>Update</button>
+          <button className="save-btn">Save</button>
           
       </form>
 

@@ -1,21 +1,11 @@
 /**
  * //somewhat inspired by: https://github.com/piyush-eon/react-typescript-taskify/blob/react-typescript-tutorial/src/components/SingleTodo.tsx
  * https://www.youtube.com/watch?v=FJDVKeh7RJI
- * Done:
- *  *10 check for editMode on date span element, if true -> render input field to edit the date?
- * 
- * 
- * date overlaps with -> move all the ability to edit to editMenu component?
- * datemenu wont showup on mobile,
+ * To do:
  * double click event does not open the task menu?
   1* when task is adder, start a timer, to track the time it took to complete a task
   2* new idea no need for timer -> Date.now - Date when it was added! -> mark red if deadline was missed?
-  4* Clicking on task name, opens a menu with task description and a form to edit date, other fields too
-  5* SingleTodo is not a reusable component, only used for pendingTasks state...
-  can i pass icons for a different type of list?
-
-  9* pressing icons (complete, delete, repeated, edit) on mobile should have a menu pop up and ask to confirm the action?
- 
+  3* SingleTodo is not a reusable component, only used for pendingTasks state...
   */
 
 import './App.css'
@@ -74,6 +64,7 @@ if(!d.valueOf()) {return ""}
   function addTask(e: React.FormEvent<HTMLFormElement>)
   {//https://www.epicreact.dev/how-to-type-a-react-form-on-submit-handler
     e.preventDefault()
+
     //should i use the taskName state?
     const form = e.currentTarget;
 
@@ -82,14 +73,17 @@ if(!d.valueOf()) {return ""}
         duedate: HTMLInputElement,
        /* repeat: HTMLInputElement*/
     }
-    let date = formatDate(formElements.duedate.value);
-    
-   // let repeat = formElements.repeat.checked ? true : false;
+
+    if(!formElements.task.value) {
+      setTitlePlaceHolder("You forgot to type a title!")
+    }
+    else{
+ // let repeat = formElements.repeat.checked ? true : false;
     
     let task = {
       id: Date.now(),
       name: formElements.task.value,
-       dueDate: date, 
+       dueDate: formatDate(formElements.duedate.value), 
       // toRepeat: repeat,
        isCompleted: false };
 
@@ -101,7 +95,7 @@ if(!d.valueOf()) {return ""}
 
        //sort the list? Do i need it?
        //mergeSort(tasks, 0, tasks.length-1);
-      //does not update the list,
+      //does not update the list, need to [...],
       //setPendingTasks(tasks);
 
     tasksTemp = putTaskInOrder(task.dueDate, task, tasksTemp);
@@ -111,6 +105,11 @@ if(!d.valueOf()) {return ""}
    //clear the task title/name field, other fields will remain
    //because, maybe you want to add more task on the same date?
    setTaskName("");
+   setTitlePlaceHolder("enter a new task");
+      
+    }
+    
+  
   }
 //pendingTask is supposed to be sorted asc, finding a place where to insert a new item, based on hronological order
     function putTaskInOrder(byDate :string, task:Task, tasks: Array<Task>): Array<Task>
@@ -154,10 +153,13 @@ if(!d.valueOf()) {return ""}
   const [searchFor, setSearchFor] = React.useState<string>("")
   const [searchResult, setSearchResult] = React.useState<Task[]>([])
 
+  const [titlePlaceholder, setTitlePlaceHolder] = React.useState<string>("enter a new task")
+
   function searchInCompletedTasks()
   {
     if(searchFor.length>2){
-       setSearchResult(completedTasks.filter(task => !task.name.search(searchFor)))
+     //  setSearchResult(completedTasks.filter(task => !task.name.search(searchFor)))
+     setSearchResult(completedTasks.filter((task) => task.name.includes(searchFor)))
     }
   }
      React.useEffect(()=>{
@@ -183,6 +185,9 @@ else searchInCompletedTasks();
 
   function handleChange(setState:React.Dispatch<React.SetStateAction<boolean>>)
   {
+   // if(showCompleted){
+    //}
+
     setState(prevState => !prevState)
   }
   //cant just leave a blank page
@@ -230,20 +235,22 @@ const onDragEndTasksDone = (result: DropResult) => {
       <p>Task scheduler</p>
       <button className='show-hide-btn' onClick={()=>handleChange(setShowCompleted)}>{showCompleted ? "Hide " : "Show "}Completed</button></div>
     
-    
+    <button className='mobile-show-hide-btn' onClick={()=>handleChange(setShowActive)}>{showActive ? "Hide " : "Show "}Active</button>
     { showActive &&
     <div className='active-tasks'>
                         
      <form onSubmit={addTask} className='new-task-form'>
+
+
       <label className='form-labels'>Task title</label>
-      <input type="text" id="task" placeholder="enter a new task" name="task" value={taskName} onChange={(e)=>setTaskName(e.target.value)}/>
+      <input type="text" id="task" placeholder={titlePlaceholder} name="task" value={taskName} onChange={(e)=>setTaskName(e.target.value)}/>
         <label className='form-labels'>Date</label>
         <input type="date" id="duedate" name="duedate"></input>
         <div>
           { /*<label className='form-labels'>Repeats every month?</label>
              <input type="checkbox" id="repeat" name="repeat-task" value="checked" ></input>*/}
         </div>
-        <button className='add-task-button'>Add</button>
+        <button type="submit" className='add-task-button'>Add</button>
       </form>
      
 
@@ -280,11 +287,11 @@ const onDragEndTasksDone = (result: DropResult) => {
 
      </div>
     </div> }
-
+<button className='mobile-show-hide-btn' onClick={()=>handleChange(setShowCompleted)}>{showCompleted ? "Hide " : "Show "}Completed</button>
 { showCompleted &&
     <div className='completed-tasks'>
-
-     <form className='completed-task-form'>
+      
+     <div className='completed-task-form'>
        <label className='form-labels'>Search by Task title</label>
       <div className='search-field-container'> 
         { searchFor && <MdClear onClick={closeSearch} className='cancel-search-btn'/>}
@@ -293,7 +300,7 @@ const onDragEndTasksDone = (result: DropResult) => {
        
        </div>
         {/*<button>Search</button>*/}
-      </form>
+      </div>
      
     {/*<SingleCompleted searchResult={searchResult} setCompletedTasks={setCompletedTasks} completedTasks={completedTasks}/>*/}
 
@@ -302,6 +309,7 @@ const onDragEndTasksDone = (result: DropResult) => {
       {(provided) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
          <div className='completed-task-list' >
+           <div className='top-section'><span className='titles'>Name</span><span className='completed-date-section'>Date</span></div>
           { //print results, which are filtered from original list, or print the whole original list(completed tasks)
            searchResult.length>0 ? 
            

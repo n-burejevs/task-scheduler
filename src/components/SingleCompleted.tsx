@@ -49,7 +49,12 @@ import EditMenu from "./EditMenu";
                   <div className='completed-tasks-row'>
                   <span className='task-name' onClick={handleOpenDetails}> {task.name}</span> 
                   <span className='date-text'> {task.dueDate} </span>
-                  <span> <MdDeleteForever onClick={()=>deleteTaskCompleted(task.id)} className='delete-button'/> </span>
+
+                  <div className="span-tooltip-container">
+                    <span> <MdDeleteForever onClick={()=>deleteTaskCompleted(task.id)} className='delete-button'/> </span>
+                    <label>Delete</label>
+                  </div>
+                  
                   </div>}
 
                </div>

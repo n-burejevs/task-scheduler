@@ -43,13 +43,13 @@ export default function SingleTodo({task, index, completedTasks, setCompletedTas
 
    const listRef = React.createRef<HTMLFormElement>();
 
-    React.useEffect(()=>{
+    /*React.useEffect(()=>{
         listRef.current?.addEventListener("dblclick", ()=> {setOpenDetails(prevState =>!prevState); console.log("click 1")})
         
          return () => {
              listRef.current?.removeEventListener("dblclick", ()=> {setOpenDetails(prevState =>!prevState); console.log("click 2")})
           }
-      }, [])
+      }, [])*/
 
     return(
            <Draggable draggableId={task.id.toString()} index={index}>
@@ -63,7 +63,7 @@ export default function SingleTodo({task, index, completedTasks, setCompletedTas
                                            openDetails={openDetails}/>)
         :
 
-        <form key={task.id} className='active-tasks-row' >
+        <form key={task.id} className='active-tasks-row' ref={listRef}>
             
 
        <span className='task-name' id="prevent-select"  onClick={handleOpenDetails}  > {task.name}</span>
