@@ -5,7 +5,7 @@
  * double click event does not open the task menu?
   1* when task is adder, start a timer, to track the time it took to complete a task
   2* new idea no need for timer -> Date.now - Date when it was added! -> mark red if deadline was missed?
-  3* SingleTodo is not a reusable component, only used for pendingTasks state...
+  5* SingleTodo is not a reusable component, only used for pendingTasks state...
   */
 
 import './App.css'
