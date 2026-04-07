@@ -1,5 +1,7 @@
 .main-content{
-  background-color: #27408d;;
+  /*background-color: #27408d;*/
+  background: linear-gradient(120deg, rgba(10, 36, 36, 1) 0%, rgba(10, 36, 36, 1) 30%,
+   rgba(65, 128, 149, 0.875) 100%);
   display: flex;
   column-gap: 20px;
   padding-left: 2px;
@@ -9,7 +11,7 @@
 .navbar{
   position: fixed;
   background-color: #000;
-  height: 30px;
+  height: 35px;
   top: 0;
   left: 0;
   right: 0;
@@ -50,7 +52,7 @@
 }
 
 .active-tasks-row:hover, .completed-tasks-row:hover{
-  background-color: rgba(249, 142, 1, 0.559);
+  background-color: rgba(117, 208, 132, 0.559);
   transform: scale(1.01);
   box-shadow: 0 0 5px black;
  
@@ -224,9 +226,9 @@
   transition: all 0.2s ease-in-out; /* Makes the color change smooth */
   outline: none; /* Removes the default browser ring */
 }
-.search-input:focus {
-  border-color: orange; /* Matches your hover/tooltip color */
-  box-shadow: 0 0 8px rgba(249, 142, 1, 0.4); /* Adds a soft orange glow */
+.search-input:focus, #task:focus, #duedate:focus {
+  border-color: rgb(99, 243, 123); /* Matches your hover/tooltip color */
+  box-shadow: 0 0 8px rgba(68, 110, 0, 0.4); /* Adds a soft glow */
 }
 /* When the input inside this container is clicked... */
 .search-field-container:focus-within {
@@ -258,7 +260,7 @@
   display: none;
   right: 0;
   font-size: small;
-  background-color: orange;
+  background-color: rgb(248, 244, 235);
   overflow: visible;
   text-wrap: wrap;
   text-align: center;
@@ -305,7 +307,7 @@ form input, .search-input{
 }
 
 .add-task-button {
-  background-color: #056ad0;
+  background-color: /*#056ad0*/#00aa82e8;
 }
 
 .show-hide-btn, .mobile-show-hide-btn, .save-btn {
@@ -329,7 +331,7 @@ form input, .search-input{
 }
 
 .add-task-button:hover, .show-hide-btn:hover, .mobile-show-hide-btn:hover, .save-btn:hover {
-  background-color: #388ae2;
+  opacity: 0.7;
 }
 
 .add-task-button:active, .show-hide-btn:active, .mobile-show-hide-btn:active{
@@ -351,6 +353,11 @@ form input, .search-input{
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.active-tasks-row:active{
+  background-color: red;;
+}
+
 
 @media (width < 20.1em) {
   .task-details
@@ -379,10 +386,14 @@ form input, .search-input{
   width: 85%;
 }
 .active-tasks, .completed-tasks{
-  margin-top: 90px;
+  margin-top: 70px;
 }
 .mobile-show-hide-btn{
   display: none;
+}
+.form-labels{
+  padding-left: 5px;
+  padding-top: 5px;
 }
 
 }

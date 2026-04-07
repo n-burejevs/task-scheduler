@@ -2,6 +2,7 @@
  * //somewhat inspired by: https://github.com/piyush-eon/react-typescript-taskify/blob/react-typescript-tutorial/src/components/SingleTodo.tsx
  * https://www.youtube.com/watch?v=FJDVKeh7RJI
  * To do:
+ * use <Activity/> and have two tabs for completed/pending tasks?
  * double click event does not open the task menu?
   1* when task is adder, start a timer, to track the time it took to complete a task
   2* new idea no need for timer -> Date.now - Date when it was added! -> mark red if deadline was missed?
@@ -183,13 +184,24 @@ else searchInCompletedTasks();
     setSearchResult([]);
   }
 
-  function handleChange(setState:React.Dispatch<React.SetStateAction<boolean>>)
+  /*function handleChange(setState:React.Dispatch<React.SetStateAction<boolean>>)
   {
    // if(showCompleted){
     //}
 
     setState(prevState => !prevState)
+  }*/
+ function showOrHideActive()
+  {
+        if(!(showActive && !showCompleted)){
+        setShowActive(prevState => !prevState);
+      }
   }
+  function showOrHideCompleted()
+  {
+    setShowCompleted(prevState => !prevState);
+  }
+
   //cant just leave a blank page
   React.useEffect(()=>{
     if(!showActive && !showCompleted){
@@ -202,7 +214,7 @@ else searchInCompletedTasks();
 
   const onDragEnd = (result: DropResult) => {
   const { source, destination } = result;
-
+  console.log("active:", source, destination);
   // If dropped outside the list or in the same spot
   if (!destination || destination.index === source.index) return;
 
@@ -216,6 +228,7 @@ else searchInCompletedTasks();
 const onDragEndTasksDone = (result: DropResult) => {
   const { source, destination } = result;
 
+    console.log("completed:", source, destination);
   // If dropped outside the list or in the same spot
   if (!destination || destination.index === source.index) return;
 
@@ -231,11 +244,11 @@ const onDragEndTasksDone = (result: DropResult) => {
   <div className='main-content'>
     
     <div className='navbar'>
-      <button className='show-hide-btn' onClick={()=>handleChange(setShowActive)}>{showActive ? "Hide " : "Show "}Active</button>
+      <button className='show-hide-btn' onClick={showOrHideActive}>{showActive ? "Hide " : "Show "}Active</button>
       <p>Task scheduler</p>
-      <button className='show-hide-btn' onClick={()=>handleChange(setShowCompleted)}>{showCompleted ? "Hide " : "Show "}Completed</button></div>
+      <button className='show-hide-btn' onClick={showOrHideCompleted}>{showCompleted ? "Hide " : "Show "}Completed</button></div>
     
-    <button className='mobile-show-hide-btn' onClick={()=>handleChange(setShowActive)}>{showActive ? "Hide " : "Show "}Active</button>
+    <button className='mobile-show-hide-btn' onClick={showOrHideActive}>{showActive ? "Hide " : "Show "}Active</button>
     { showActive &&
     <div className='active-tasks'>
                         
@@ -287,7 +300,7 @@ const onDragEndTasksDone = (result: DropResult) => {
 
      </div>
     </div> }
-<button className='mobile-show-hide-btn' onClick={()=>handleChange(setShowCompleted)}>{showCompleted ? "Hide " : "Show "}Completed</button>
+<button className='mobile-show-hide-btn' onClick={showOrHideCompleted}>{showCompleted ? "Hide " : "Show "}Completed</button>
 { showCompleted &&
     <div className='completed-tasks'>
       
